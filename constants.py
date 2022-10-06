@@ -1,0 +1,7 @@
+window_width = 'WINDOWWIDTH'
+window_height = 'WINDOWHEIGHT'
+board_width  = 'BOARDWIDTH'
+board_height = 'BOARDHEIGHT'
+text_color = 'TEXTCOLOR'
+text_bg_color = 'TEXTBGCOLOR2'
+text_bg_color_first = 'TEXTBGCOLOR1'
