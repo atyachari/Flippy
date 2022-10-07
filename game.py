@@ -1,5 +1,5 @@
 import random, sys, pygame, time, copy
-from pygame.locals import *
+from pygame.locals import MOUSEBUTTONUP, QUIT, KEYUP, K_ESCAPE
 from configparser import ConfigParser
 
 from constants import window_width, board_width, text_color, text_bg_color_2, board_height, window_height, \
