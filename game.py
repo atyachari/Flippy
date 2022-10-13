@@ -18,11 +18,11 @@ def main():
     FONT = pygame.font.Font('freesansbold.ttf', 16)
     BIGFONT = pygame.font.Font('freesansbold.ttf', 32)
 
-    board_image = pygame.image.load('imgs/flippyboard.png')
+    board_image = pygame.image.load('resources/imgs/flippybackground.png')
     board_image = pygame.transform.smoothscale(board_image, (config.getint('int_var',board_width) * config.getint('int_var','SPACESIZE'), config.getint('int_var',board_height) * config.getint('int_var','SPACESIZE')))
     board_image_rect = board_image.get_rect()
     board_image_rect.topleft = (eval(config.get('int_var','XMARGIN')), eval(config.get('int_var','YMARGIN')))
-    BGIMAGE = pygame.image.load('imgs/flippybackground.png')
+    BGIMAGE = pygame.image.load('resources/imgs/flippybackground.png')
     BGIMAGE = pygame.transform.smoothscale(BGIMAGE, (config.getint('int_var',window_width), config.getint('int_var',window_height)))
     BGIMAGE.blit(board_image, board_image_rect)
 
