@@ -8,21 +8,24 @@ from constants import window_width, board_width, text_color, text_bg_color_2, bo
 config = ConfigParser()
 config.read('config.ini')
 
+class MAINCLOCK:
+    ML = pygame.time.Clock()
+    tick = ML.tick(config.getint('int_var','FPS'))
+
 def main():
-    global MAINCLOCK, DISPLAYSURF, FONT, BIGFONT, BGIMAGE
+    global DISPLAYSURF, FONT, BIGFONT, BGIMAGE
 
     pygame.init()
-    MAINCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((config.getint('int_var',window_width), config.getint('int_var',window_height)))
     pygame.display.set_caption('Flippy')
     FONT = pygame.font.Font('freesansbold.ttf', 16)
     BIGFONT = pygame.font.Font('freesansbold.ttf', 32)
 
-    board_image = pygame.image.load('imgs/flippyboard.png')
+    board_image = pygame.image.load('resources/imgs/flippybackground.png')
     board_image = pygame.transform.smoothscale(board_image, (config.getint('int_var',board_width) * config.getint('int_var','SPACESIZE'), config.getint('int_var',board_height) * config.getint('int_var','SPACESIZE')))
     board_image_rect = board_image.get_rect()
     board_image_rect.topleft = (eval(config.get('int_var','XMARGIN')), eval(config.get('int_var','YMARGIN')))
-    BGIMAGE = pygame.image.load('imgs/flippybackground.png')
+    BGIMAGE = pygame.image.load('resources/imgs/flippybackground.png')
     BGIMAGE = pygame.transform.smoothscale(BGIMAGE, (config.getint('int_var',window_width), config.getint('int_var',window_height)))
     BGIMAGE.blit(board_image, board_image_rect)
 
@@ -73,7 +76,7 @@ def start_game(main_board, player_tile=None, computer_tile=None):
                 DISPLAYSURF.blit(new_game_surf, new_game_rect)
                 DISPLAYSURF.blit(hints_surf, hints_rect)
 
-                MAINCLOCK.tick(config.getint('int_var','FPS'))
+                MAINCLOCK.tick
                 pygame.display.update()
 
             make_move(main_board, player_tile, movexy[0], movexy[1], True)
@@ -133,7 +136,7 @@ def check_exit(text):
         DISPLAYSURF.blit(yes_surf, yes_rect)
         DISPLAYSURF.blit(no_surf, no_rect)
         pygame.display.update()
-        MAINCLOCK.tick(config.getint('int_var','FPS'))
+        MAINCLOCK.tick
 
 
 def check_score(scores, player_tile, computer_tile):
@@ -191,7 +194,7 @@ def animateTileChange(tiles_to_flip, tileColor, additionalTile):
             centerx, centery = translateBoardToPixelCoord(x, y)
             pygame.draw.circle(DISPLAYSURF, color, (centerx, centery), int(config.getint('int_var','SPACESIZE') / 2) - 4)
         pygame.display.update()
-        MAINCLOCK.tick(config.getint('int_var','FPS'))
+        MAINCLOCK.tick
         check_for_quit()
 
 
@@ -364,7 +367,7 @@ def enter_player_tile():
         DISPLAYSURF.blit(xSurf, xRect)
         DISPLAYSURF.blit(oSurf, oRect)
         pygame.display.update()
-        MAINCLOCK.tick(config.getint('int_var','FPS'))
+        MAINCLOCK.tick
 
 
 def make_move(board, tile, xstart, ystart, realMove=False):
