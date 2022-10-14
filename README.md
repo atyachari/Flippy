@@ -2,7 +2,7 @@
 
 A game in which a player has to invert the tiles of the opponent.
 
-![Game screen](/imgs/game.png)
+![Game screen](resources/imgs/game.png)
 
 ## Running the game
 
