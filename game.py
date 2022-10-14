@@ -12,12 +12,14 @@ def main():
     global MAINCLOCK, DISPLAYSURF, FONT, BIGFONT, BGIMAGE
 
     pygame.init()
+    # initializing the timer and setting window size with other relevant information.
     MAINCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((config.getint('int_var',window_width), config.getint('int_var',window_height)))
     pygame.display.set_caption('Flippy')
     FONT = pygame.font.Font('freesansbold.ttf', 16)
     BIGFONT = pygame.font.Font('freesansbold.ttf', 32)
 
+    # designing and populating the content inside the window
     board_image = pygame.image.load('imgs/flippyboard.png')
     board_image = pygame.transform.smoothscale(board_image, (config.getint('int_var',board_width) * config.getint('int_var','SPACESIZE'), config.getint('int_var',board_height) * config.getint('int_var','SPACESIZE')))
     board_image_rect = board_image.get_rect()
@@ -30,7 +32,9 @@ def main():
         if run_game() == False:
             break
 
-
+'''
+    start_game is responsible for validating the player actions and contains the core logic of the game.
+'''
 def start_game(main_board, player_tile=None, computer_tile=None):
     show_hints = False
     turn = random.choice(['computer', 'player'])
@@ -99,7 +103,9 @@ def start_game(main_board, player_tile=None, computer_tile=None):
             if get_valid_moves(main_board, player_tile):
                 turn = 'player'
 
-
+'''
+    check_exit is responsible for verifying if the game has reached its end.
+'''
 def check_exit(text):
     text_surf = FONT.render(text, True, (config.getint(text_color,'r'),config.getint(text_color,'g'),config.getint(text_color,'b')), (config.getint(text_bg_color_1,'r'),config.getint(text_bg_color_1,'g'),config.getint(text_bg_color_1,'b')))
     text_rect = text_surf.get_rect()
@@ -136,6 +142,9 @@ def check_exit(text):
         MAINCLOCK.tick(config.getint('int_var','FPS'))
 
 
+'''
+    check_score calculates the score of the individual player
+'''
 def check_score(scores, player_tile, computer_tile):
     if scores[player_tile] > scores[computer_tile]:
         return 'You beat the computer by %s points! Congratulations!' % \
@@ -146,6 +155,9 @@ def check_score(scores, player_tile, computer_tile):
     else:
         return 'The game was a tie!'
 
+'''
+    run_game is starting point of the execution of game.
+'''
 def run_game():
     main_board = get_new_board()
     resetBoard(main_board)
@@ -166,7 +178,9 @@ def run_game():
 def translateBoardToPixelCoord(x, y):
     return eval(config.get('int_var','XMARGIN')) + x * config.getint('int_var','SPACESIZE') + int(config.getint('int_var','SPACESIZE') / 2), eval(config.get('int_var','YMARGIN')) + y * config.getint('int_var','SPACESIZE') + int(config.getint('int_var','SPACESIZE') / 2)
 
-
+'''
+    animateTileChange is responsible for the content of the window to be changed on each player's move
+'''
 def animateTileChange(tiles_to_flip, tileColor, additionalTile):
     if tileColor == config.get('tiles','WHITE_TILE'):
         additionalTileColor = (config.getint(text_color,'r'),config.getint(text_color,'g'),config.getint(text_color,'b'))
@@ -336,7 +350,9 @@ def get_score_of_board(board):
                 oscore += 1
     return {config.get('tiles','WHITE_TILE'):xscore, config.get('tiles','BLACK_TILE'):oscore}
 
-
+'''
+    enter_player_tile gets the player's tile selected
+'''
 def enter_player_tile():
     text_surf = FONT.render('Do you want to be white or black?', True, (config.getint(text_color,'r'),config.getint(text_color,'g'),config.getint(text_color,'b')), (config.getint(text_bg_color_1,'r'),config.getint(text_bg_color_1,'g'),config.getint(text_bg_color_1,'b')))
     text_rect = text_surf.get_rect()
@@ -366,7 +382,9 @@ def enter_player_tile():
         pygame.display.update()
         MAINCLOCK.tick(config.getint('int_var','FPS'))
 
-
+'''
+    make_move is responsible for registering the movement of the player
+'''
 def make_move(board, tile, xstart, ystart, realMove=False):
     tiles_to_flip = is_valid_move(board, tile, xstart, ystart)
 
@@ -382,14 +400,18 @@ def make_move(board, tile, xstart, ystart, realMove=False):
         board[x][y] = tile
     return True
 
-
+'''
+    is_on_corner checks if the player is in the corner of the board.
+'''
 def is_on_corner(x, y):
     return (x == 0 and y == 0) or \
            (x == config.getint('int_var',board_width) and y == 0) or \
            (x == 0 and y == config.getint('int_var',board_height)) or \
            (x == config.getint('int_var',board_width) and y == config.getint('int_var',board_height))
 
-
+'''
+    getComputerMove translates the key press to the relevant move in the game.
+'''
 def getComputerMove(board, computer_tile):
     possibleMoves = get_valid_moves(board, computer_tile)
 
@@ -409,7 +431,9 @@ def getComputerMove(board, computer_tile):
             bestScore = score
     return bestMove
 
-
+'''
+    check_for_quit handles 'quit' from the game.
+'''
 def check_for_quit():
     for event in pygame.event.get((QUIT, KEYUP)): # event handling loop
         if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
