@@ -8,12 +8,15 @@ from constants import window_width, board_width, text_color, text_bg_color_2, bo
 config = ConfigParser()
 config.read('config.ini')
 
+class MAINCLOCK:
+    ML = pygame.time.Clock()
+    tick = ML.tick(config.getint('int_var','FPS'))
+    
 def main():
-    global MAINCLOCK, DISPLAYSURF, FONT, BIGFONT, BGIMAGE
+    global DISPLAYSURF, FONT, BIGFONT, BGIMAGE
 
     pygame.init()
     # initializing the timer and setting window size with other relevant information.
-    MAINCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((config.getint('int_var',window_width), config.getint('int_var',window_height)))
     pygame.display.set_caption('Flippy')
     FONT = pygame.font.Font('freesansbold.ttf', 16)
@@ -77,7 +80,7 @@ def start_game(main_board, player_tile=None, computer_tile=None):
                 DISPLAYSURF.blit(new_game_surf, new_game_rect)
                 DISPLAYSURF.blit(hints_surf, hints_rect)
 
-                MAINCLOCK.tick(config.getint('int_var','FPS'))
+                MAINCLOCK.tick
                 pygame.display.update()
 
             make_move(main_board, player_tile, movexy[0], movexy[1], True)
@@ -139,7 +142,7 @@ def check_exit(text):
         DISPLAYSURF.blit(yes_surf, yes_rect)
         DISPLAYSURF.blit(no_surf, no_rect)
         pygame.display.update()
-        MAINCLOCK.tick(config.getint('int_var','FPS'))
+        MAINCLOCK.tick
 
 
 '''
@@ -205,7 +208,7 @@ def animateTileChange(tiles_to_flip, tileColor, additionalTile):
             centerx, centery = translateBoardToPixelCoord(x, y)
             pygame.draw.circle(DISPLAYSURF, color, (centerx, centery), int(config.getint('int_var','SPACESIZE') / 2) - 4)
         pygame.display.update()
-        MAINCLOCK.tick(config.getint('int_var','FPS'))
+        MAINCLOCK.tick
         check_for_quit()
 
 
@@ -380,7 +383,7 @@ def enter_player_tile():
         DISPLAYSURF.blit(xSurf, xRect)
         DISPLAYSURF.blit(oSurf, oRect)
         pygame.display.update()
-        MAINCLOCK.tick(config.getint('int_var','FPS'))
+        MAINCLOCK.tick
 
 '''
     make_move is responsible for registering the movement of the player
