@@ -54,8 +54,8 @@ def start_game(main_board, player_tile=None, computer_tile=None):
         if turn == 'player':
             if get_valid_moves(main_board, player_tile) == []:
                 break
-            movexy = None
-            while movexy == None:
+            move_xy = None
+            while move_xy == None:
 
                 if show_hints:
                     boardToDraw = get_board_with_valid_moves(main_board, player_tile)
@@ -65,14 +65,14 @@ def start_game(main_board, player_tile=None, computer_tile=None):
                 check_for_quit()
                 for event in pygame.event.get(): # event handling loop
                     if event.type == MOUSEBUTTONUP:
-                        mousex, mousey = event.pos
-                        if new_game_rect.collidepoint( (mousex, mousey) ):
+                        mouse_x, mouse_y = event.pos
+                        if new_game_rect.collidepoint( (mouse_x, mouse_y) ):
                             return True
-                        elif hints_rect.collidepoint( (mousex, mousey) ):
+                        elif hints_rect.collidepoint( (mouse_x, mouse_y) ):
                             show_hints = not show_hints
-                        movexy = get_spaced_clicked(mousex, mousey)
-                        if movexy != None and not is_valid_move(main_board, player_tile, movexy[0], movexy[1]):
-                            movexy = None
+                        move_xy = get_spaced_clicked(mouse_x, mouse_y)
+                        if move_xy != None and not is_valid_move(main_board, player_tile, move_xy[0], move_xy[1]):
+                            move_xy = None
 
                 draw_board(boardToDraw)
                 draw_info(boardToDraw, player_tile, computer_tile, turn)
@@ -83,7 +83,7 @@ def start_game(main_board, player_tile=None, computer_tile=None):
                 MAINCLOCK.tick
                 pygame.display.update()
 
-            make_move(main_board, player_tile, movexy[0], movexy[1], True)
+            make_move(main_board, player_tile, move_xy[0], move_xy[1], True)
             if get_valid_moves(main_board, computer_tile):
                 turn = 'computer'
 
@@ -132,10 +132,10 @@ def check_exit(text):
         check_for_quit()
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONUP:
-                mousex, mousey = event.pos
-                if yes_rect.collidepoint( (mousex, mousey) ):
+                mouse_x, mouse_y = event.pos
+                if yes_rect.collidepoint( (mouse_x, mouse_y) ):
                     return True
-                elif no_rect.collidepoint( (mousex, mousey) ):
+                elif no_rect.collidepoint( (mouse_x, mouse_y) ):
                     return False
         DISPLAYSURF.blit(text_surf, text_rect)
         DISPLAYSURF.blit(text2surf, text2rect)
@@ -241,11 +241,11 @@ def draw_board(board):
                 pygame.draw.rect(DISPLAYSURF, (config.getint('HINTCOLOR','r'),config.getint('HINTCOLOR','g'),config.getint('HINTCOLOR','b')), (centerx - 4, centery - 4, 8, 8))
 
 
-def get_spaced_clicked(mousex, mousey):
+def get_spaced_clicked(mouse_x, mouse_y):
     for x in range(config.getint('int_var',board_width)):
         for y in range(config.getint('int_var',board_height)):
-            if x * config.getint('int_var', 'SPACESIZE') + eval(config.get('int_var', 'XMARGIN')) < mousex < (x + 1) * config.getint('int_var', 'SPACESIZE') + eval(config.get('int_var', 'XMARGIN')) and \
-                    y * config.getint('int_var', 'SPACESIZE') + eval(config.get('int_var', 'YMARGIN')) < mousey < (
+            if x * config.getint('int_var', 'SPACESIZE') + eval(config.get('int_var', 'XMARGIN')) < mouse_x < (x + 1) * config.getint('int_var', 'SPACESIZE') + eval(config.get('int_var', 'XMARGIN')) and \
+                    y * config.getint('int_var', 'SPACESIZE') + eval(config.get('int_var', 'YMARGIN')) < mouse_y < (
                     y + 1) * config.getint('int_var', 'SPACESIZE') + eval(config.get('int_var', 'YMARGIN')):
                 return x, y
     return None
@@ -290,7 +290,8 @@ def is_valid_move(board, tile, xstart, ystart):
         otherTile = config.get('tiles','WHITE_TILE')
 
     tiles_to_flip = []
-    for xdirection, ydirection in [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]:
+    allowed_directions = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
+    for xdirection, ydirection in allowed_directions:
         x, y = xstart, ystart
         x += xdirection
         y += ydirection
@@ -373,10 +374,10 @@ def enter_player_tile():
         check_for_quit()
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONUP:
-                mousex, mousey = event.pos
-                if xRect.collidepoint( (mousex, mousey) ):
+                mouse_x, mouse_y = event.pos
+                if xRect.collidepoint( (mouse_x, mouse_y) ):
                     return [config.get('tiles','WHITE_TILE'), config.get('tiles','BLACK_TILE')]
-                elif oRect.collidepoint( (mousex, mousey) ):
+                elif oRect.collidepoint( (mouse_x, mouse_y) ):
                     return [config.get('tiles','BLACK_TILE'), config.get('tiles','WHITE_TILE')]
 
         DISPLAYSURF.blit(text_surf, text_rect)
